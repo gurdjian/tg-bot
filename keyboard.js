@@ -7,15 +7,4 @@ function getCards(adapters) {
   return Markup.inlineKeyboard([kbArray]);
 }
 
-// function getCards(adapters) {
-//   const kbArray = adapters.map(el => el.title);
-// return Markup.inlineKeyboard(kbArray).resize();
-
-// return Markup.inlineKeyboard([
-
-// Markup.button.callback(`${ Controller.getAdapters.getValue(Controller.getAdapters()) }`, `${ Controller.getAdapters.getValue(Controller.getAdapters()) }`),
-// Markup.button.callback('AMD', 'AMD'),
-// ]).resize();
-//}
-
 module.exports = { getCards };
