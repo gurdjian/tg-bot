@@ -1,9 +1,7 @@
 class Controller {
-  constructor () {
-
+  constructor() {
   }
   static async getAdapters(contextFrom) {
-    console.log(contextFrom);
     return [
       {
         id: 1,
@@ -15,8 +13,13 @@ class Controller {
       },
     ]
   }
-  // async getPrices
-
+  static async getPrices(id) {
+    return [
+      {
+        
+      }
+    ]
+  }
 }
 
-module.exports = Controller
+module.exports = Controller;
