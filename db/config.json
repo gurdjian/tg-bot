@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "tgbot",
+    "password": "Sj9pYgMeekCcJOEmsbqjWZQPH",
+    "database": "tgparser",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "tgbot",
+    "password": "Sj9pYgMeekCcJOEmsbqjWZQPH",
+    "database": "tgparser",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "tgbot",
+    "password": "Sj9pYgMeekCcJOEmsbqjWZQPH",
+    "database": "tgparser",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
