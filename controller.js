@@ -16,7 +16,7 @@ class Controller {
   static async getPrices(id) {
     return [
       {
-        
+
       }
     ]
   }
