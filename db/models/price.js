@@ -11,6 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.Adapter,{
+        foreignKey: 'adapterId'
+      });
+      this.hasMany(models.Shop, {
+        foreignKey: 'shopId'
+      });
     }
   };
   Price.init({
