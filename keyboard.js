@@ -1,9 +1,8 @@
 const { Markup } = require('telegraf');
 
-function getMainMenu() {
-  return Markup.keyboard([
-    ['NVIDIA', 'AMD'],
-  ]).resize();
+function getMainMenu(adapters) {
+  const kbArray = adapters.map( (elem) => elem.title)
+  return Markup.keyboard(kbArray).resize();
 }
 
 module.exports = { getMainMenu };

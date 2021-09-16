@@ -1,8 +1,9 @@
 class Controller {
-  constructor (name) {
-    this.name = name
+  constructor () {
+
   }
-  async getAdapters(contextFrom) {
+  static async getAdapters(contextFrom) {
+    console.log(contextFrom);
     return [
       {
         id: 1,
@@ -14,7 +15,7 @@ class Controller {
       },
     ]
   }
-  async getPrices
+  // async getPrices
 
 }
 

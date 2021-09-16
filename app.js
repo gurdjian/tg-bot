@@ -3,14 +3,15 @@ const express = require('express');
 const TelegramBot = require('node-telegram-bot-api');
 const { Telegraf } = require('telegraf');
 const { getMainMenu } = require('./keyboard');
-const C
+const Controller = require('./controller')
 
 const app = express();
 const bot = new Telegraf(TOKEN);
 
-bot.start(ctx => {
-  console.log(ctx.from);
-  ctx.reply('Welcome, bro', getMainMenu());
+bot.start(async ctx => {
+  const adapters = await Controller.getAdapters(ctx.from);
+  const replyKB = getMainMenu(adapters);
+  ctx.reply('Choose adapter', replyKB);
 });
 
 bot.hears('хочу есть', ctx => {
