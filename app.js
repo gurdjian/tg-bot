@@ -3,11 +3,13 @@ const express = require('express');
 const TelegramBot = require('node-telegram-bot-api');
 const { Telegraf } = require('telegraf');
 const { getMainMenu } = require('./keyboard');
+const C
 
 const app = express();
 const bot = new Telegraf(TOKEN);
 
 bot.start(ctx => {
+  console.log(ctx.from);
   ctx.reply('Welcome, bro', getMainMenu());
 });
 
