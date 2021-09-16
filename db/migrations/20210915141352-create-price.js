@@ -15,6 +15,12 @@ module.exports = {
           key: 'id'
         },
       },
+      adapterFullName: {
+        type: Sequelize.TEXT,
+      },
+      adapterLink: {
+        type: Sequelize.TEXT,
+      },
       shopId: {
         type: Sequelize.INTEGER,
         references: {
