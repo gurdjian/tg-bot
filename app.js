@@ -5,17 +5,45 @@ const { Telegraf } = require('telegraf');
 const { getCards } = require('./keyboard');
 // const { User } = require('./db/models');
 // const { Adapter } = require('./db/models');
-const { Controller } = require('./controller');
+const Controller = require('./controller');
 
 const app = express();
 const bot = new Telegraf(TOKEN);
 
-bot.start(ctx => {
-  Controller.getAdapters(ctx.from);
-  ctx.reply('Выбери видеокарту', getCards());
-  // console.log(ctx.from.first_name)
-  // ctx.reply('Выбери разработчика видеокарты', getCardDeveloper());
+bot.start(async ctx => {
+  Controller.getAdapters(ctx.from)
+  const adapters = await Controller.getAdapters();
+  const replyKB = getCards(adapters);
+  ctx.reply('Выбери видеокарту', replyKB);
 });
+
+//текст
+// из таблиц:
+// adapters: title
+// shops: shopName
+// prices: price
+// prices: available 
+// shops: searchLink
+
+bot.action(/.+/, (ctx, next) => {
+  let id = ctx.match[0].split('/')[1]
+  // Controller.getPrice(id)
+  return ctx.reply('название, магазин, цена, наличие, ссылка').then(() => next())
+})
+
+// bot.command('time', ctx => {
+//   ctx.reply(String(new Date()));
+// });
+
+// bot.action(replyKB, ctx => {
+//   for (let i of replyKB) {
+//     if ((ctx.callbackQuery.data === replyKB[i])) {
+//       getButton(ctx.callbackQuery.data)
+//отправляет ответ на Controller 
+//     }
+//   }
+
+// })
 
 // bot.action(['yes', 'no'], ctx => {
 //   if (ctx.callbackQuery.data === 'yes') {
@@ -40,3 +68,5 @@ bot.on('text', ctx => {
 
 bot.launch()
 app.listen(PORT, () => console.log(`My server is running on port ${PORT}`));
+
+// module.exports = { getInfo };
