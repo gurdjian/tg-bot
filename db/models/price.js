@@ -21,12 +21,12 @@ module.exports = (sequelize, DataTypes) => {
   };
   Price.init({
     adapterId: DataTypes.INTEGER,
-    adapterFullName: DataTypes.TEXT,
+    // adapterFullName: DataTypes.TEXT,
     adapterLink: DataTypes.TEXT,
     shopId: DataTypes.INTEGER,
     price: DataTypes.INTEGER,
     available: DataTypes.BOOLEAN,
-    parseTS: DataTypes.DATE,
+    // parseTS: DataTypes.DATE,
   }, {
     sequelize,
     modelName: 'Price',

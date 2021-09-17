@@ -24,6 +24,7 @@ bot.start(async ctx => {
 // prices: price
 // prices: available 
 // shops: searchLink
+Controller.parser();
 
 bot.action(/.+/, (ctx, next) => {
   let id = ctx.match[0].split('/')[1]

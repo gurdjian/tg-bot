@@ -14,9 +14,6 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Notification,{
         foreignKey: 'userId'
       });
-      this.hasMany(models.Price,{
-        foreignKey: 'userId'
-      });
     }
   };
   User.init({

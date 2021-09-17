@@ -5,9 +5,9 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const user = await User.findOne();
       const Shops = [
-        {shopName: 'DNS' , searchLink: 'https://www.dns-shop.ru/catalog/17a89aab16404e77/videokarty/?p=', userId: user.id},
-        {shopName: 'MVideo' , searchLink: 'mvideo.ru', userId: user.id},
-        {shopName: 'Citilink' , searchLink: 'citilink.ru', userId: user.id},
+        {shopName: 'DNS' , searchLink: 'https://www.dns-shop.ru/catalog/17a89aab16404e77/videokarty/?p='},
+        {shopName: 'MVideo' , searchLink: 'mvideo.ru'},
+        {shopName: 'Citilink' , searchLink: 'citilink.ru'},
       ]
       await queryInterface.bulkInsert('Shops', Shops, {});
   },

@@ -1,3 +1,3 @@
-const fs = require('fs');
-const data = fs.readFileSync('./txt', 'utf-8');
+const { AdapterGroups } = require("./db/models");
+
 console.table(JSON.parse(data));
