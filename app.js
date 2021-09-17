@@ -2,88 +2,78 @@ const { PORT, TOKEN } = require('./config');
 const express = require('express');
 const TelegramBot = require('node-telegram-bot-api');
 const { Telegraf } = require('telegraf');
-const { getCards, getGraph } = require('./keyboard');
-// const { User } = require('./db/models');
-// const { Adapter } = require('./db/models');
+const { getCards, getGroupCards } = require('./keyboard');
 const Controller = require('./controller');
 
 const app = express();
 const bot = new Telegraf(TOKEN);
 
-bot.start((ctx, next) => {
-  ctx.reply(
-    `Приветствую, ${ctx.from.first_name ? ctx.from.first_name : "хороший человек"
-    }! Набери /help и увидишь, что я могу.`)
+bot.start(async (ctx, next) => {
+  // Controller.getAdapters(ctx.from)
+  const groupadapters = await Controller.getGroupAdapters(ctx.from);
+  const groupsOfVideocards = getGroupCards(groupadapters);
+  ctx.reply('Выбери видеокарту', groupsOfVideocards);
   next();
 });
-bot.help(async (ctx, next) => {
-  // Controller.getAdapters(ctx.from)
+
+bot.action('GeForce RTX 3070/1', async (ctx) => {
+  let id = ctx.match[0].split('/')[1];
+  // const idProduct = await Controller.getPrice(id);
   const adapters = await Controller.getAdapters(ctx.from);
   const listOfVideocards = getCards(adapters);
   ctx.reply('Выбери видеокарту', listOfVideocards);
-  next();
+  // next();
 });
-// bot.action('')
-// bot.start((ctx) =>
-//   ctx.reply(
-//     `Приветствую, ${ctx.from.first_name ? ctx.from.first_name : "хороший человек"
-//     }! Набери /help и увидишь, что я могу.`
-//   )
-// );
 
-//текст
-// из таблиц:
-// adapters: title
-// shops: shopName
-// prices: price
-// prices: available 
-// shops: searchLink
+bot.action('GeForce RTX 3080', async (ctx) => {
+  let id = ctx.match[0].split('/')[1];
+  // const idProduct = await Controller.getPrice(id);
+  const adapters = await Controller.getAdapters(ctx.from);
+  const listOfVideocards = getCards(adapters);
+  ctx.reply('Выбери видеокарту', listOfVideocards);
+  // next();
+});
 
-// bot.action('График', (ctx) => {
+bot.action('GeForce RTX 3080 Ti', async (ctx) => {
+  let id = ctx.match[0].split('/')[1];
+  // const idProduct = await Controller.getPrice(id);
+  const adapters = await Controller.getAdapters(ctx.from);
+  const listOfVideocards = getCards(adapters);
+  ctx.reply('Выбери видеокарту', listOfVideocards);
+  // next();
+});
 
-// });
+const timeOut = (func, time) =>
+  new Promise((res) => setTimeout(() => res(func()), time));
 
-// bot.action('graph', async (ctx, next) => {
-//   ctx.reply('Hello')
-//   ctx.replyWithPhoto({ source: "./chart.png" });
-//   next();
-// })
+function getInfo(ctx) {
+  return ctx.reply(`Нажми /start, чтобы выбрать видеокарту
+Нажми /statistic, чтобы увидеть статистику по данной видеокарте`)
+}
 
-
-bot.action(/.+/, async (ctx, next) => {
+bot.action(/.+/, async (ctx) => {
   let id = ctx.match[0].split('/')[1];
   // const idProduct = await Controller.getPrice(id);
   ctx.reply('название, магазин, цена, наличие, ссылка');
-  // ctx.reply('/start');
-  ctx.reply(`Если хочешь увидеть статистику, жми /статистика`);
-  next();
+  await timeOut(() => getInfo(ctx), 1000);
+  // ctx.reply(`Если хочешь увидеть статистику, жми /статистика`);
 });
+
+bot.help((ctx, next) => {
+  ctx.reply(`Нажми /start, чтобы выбрать видеокарту
+  Нажми /statistic, чтобы увидеть статистику по данной видеокарте`)
+  next()
+});
+
+
 bot.command('/statistic', (ctx, next) => {
   ctx.replyWithPhoto({ source: "./chart.png" });
-    next();
+  next();
 })
 
-// bot.command('graph', (ctx) => {
-//   const chatId = ctx.chat.id;
-//   ctx.replyWithPhoto(chatId, 'chart.png');
-// });
-
-bot.command('info', ctx => {
-  ctx.reply(ctx.from);
+bot.on('text', ctx => {
+  ctx.reply(ctx.update.message.text);
 });
-
-
-bot.hears('покажи еще', ctx => {
-  ctx.reply('/start');
-});
-
-bot.command('time', ctx => {
-  ctx.reply(String(new Date()));
-});
-
-// bot.on('text', ctx => {
-//   ctx.reply(ctx.update.message.text);
-// });
 
 bot.launch();
 
