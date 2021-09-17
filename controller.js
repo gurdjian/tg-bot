@@ -1,17 +1,15 @@
-const { User, Shop, Adapter, Price } = require('./db/models');
+const { User, Shop, Adapter, Price } = require("./db/models");
 
 class Controller {
-  constructor() {
-  }
+  constructor() {}
   static async getAdapters(contextFrom) {
     // const user = User.findOne({ where: {tgId: contextFrom.id}});
     const user = User.findOne();
     if (user) {
-
     } else {
       // await User.create({ name: contextFrom['first_name'], tgId: contextFrom.id });
     }
-    return await Adapter.findAll({limit: 20})
+    return await Adapter.findAll({ limit: 20 });
     // return [
     //   {
     //     id: 1,
@@ -24,18 +22,21 @@ class Controller {
     // ]
   }
   static async getPrices(id) {
-    const prices = Price.findAll({  include: {
+    const prices = Price.findAll({
+      include: {
         model: Shop,
-        where: {id}
-      }
+        where: { id },
+      },
     });
     // 'название, магазин, цена, наличие, ссылка'
     const textArr = []; //prices[0].adapterFullName
-    prices.forEach(element => {
-      textArr.push(`${element.Shop.shopName} ${element.price}  ${element.adapterLink}`)
+    prices.forEach((element) => {
+      textArr.push(
+        `${element.Shop.shopName} ${element.price}  ${element.adapterLink}`
+      );
     });
     textArr.push();
-    return textArr.join('\n');
+    return textArr.join("\n");
   }
 }
 

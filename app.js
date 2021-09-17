@@ -11,10 +11,10 @@ const app = express();
 const bot = new Telegraf(TOKEN);
 
 bot.start(async ctx => {
-  Controller.getAdapters(ctx.from)
-  const adapters = await Controller.getAdapters();
-  const replyKB = getCards(adapters);
-  ctx.reply('Выбери видеокарту', replyKB);
+  // Controller.getAdapters(ctx.from)
+  const adapters = await Controller.getAdapters(ctx.from);
+  const listOfVideocards = getCards(adapters);
+  ctx.reply('Выбери видеокарту', listOfVideocards);
 });
 
 //текст
@@ -44,19 +44,13 @@ bot.action(/.+/, (ctx, next) => {
 //     }
 //   }
 
-// })
+bot.command('info', ctx => {
+  ctx.reply(ctx.from);
+});
 
-// bot.action(['yes', 'no'], ctx => {
-//   if (ctx.callbackQuery.data === 'yes') {
-//       addTask('сюда будем передавать текст задачи')
-//       ctx.editMessageText('Ваша задача успешно добавлена')
-//   } else {
-//       ctx.deleteMessage()
-//   }
-// })
 
-bot.hears('хочу есть', ctx => {
-  ctx.reply('Так передохни и покушай');
+bot.hears('покажи еще', ctx => {
+  ctx.reply('/start');
 });
 
 bot.command('time', ctx => {
@@ -64,10 +58,12 @@ bot.command('time', ctx => {
 });
 
 bot.on('text', ctx => {
-  ctx.reply('just text');
+  console.log(ctx.update.message.text);
+  ctx.reply(ctx.update.message.text);
 });
 
-bot.launch()
-app.listen(PORT, () => console.log(`My server is running on port ${PORT}`));
+bot.launch();
 
-// module.exports = { getInfo };
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
+app.listen(PORT, () => console.log(`My server is running on port ${PORT}`));
