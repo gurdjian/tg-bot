@@ -14,21 +14,23 @@ module.exports = {
     adapterLink: link
     */
    const shop = await Shop.findOne();
-   const adapter = await Adapter.findOne();
-   console.log(adapter.id);
+  //  const adapter = await Adapter.findOne();
+  //  console.log(adapter.id);
+   const objAdapters = {};
    const data = JSON.parse(fs.readFileSync('./txt', 'utf-8')).reduce( (acc, elem) => {
     // console.log(elem.title.match(/Видеокарта (.+) \[.+\] \[.+\]/)[1]);  
     let fullName = '';
     if(elem.title.match(/Видеокарта (.+) \[.+\] \[.+\]/i)) {
-      console.log(elem.title.match(/Видеокарта (.+) \[.+\] \[.+\]/i)[1])
+      // console.log(elem.title.match(/Видеокарта (.+) \[.+\] \[.+\]/i)[1])
       fullName = elem.title.match(/Видеокарта (.+) \[.+\] \[.+\]/i)[1];
     } else {
-      console.log('!!!!===>', elem.title)
+      // console.log('!!!!===>', elem.title)
       fullName = elem.title;
-    }
+    };
+    objAdapters[fullName.match(/\b (.+)/)[1]] = '';
     acc.push({
-        adapterId: adapter.id,
-        adapterFullName: fullName,
+        adapterId: 100,
+        adapterFullName: fullName.match(/\b (.+)/)[1],
         price: elem.price === 'no-price' ? null : +elem.price.replace('₽', '').replace(/ /g,''),
         adapterLink: elem.link,
         shopId: shop.id,
@@ -37,7 +39,18 @@ module.exports = {
       });
       return acc; 
     }, []);
-     await queryInterface.bulkInsert('Prices', data, {});
+    const adapters = Object.keys(objAdapters).map( (elem) =>  ({ title: elem }));
+
+    await queryInterface.bulkInsert('Adapters', adapters, {});
+    // const adapters = objAdapters.keys().forEach( (elem) =>  {title: elem});
+    const newDataPromises = data.map( async (elem) =>{
+      const adapter = await Adapter.findOne({where: {title: elem.adapterFullName}});
+      elem.adapterId = adapter.id;
+      return elem;
+    }) 
+    const newData = await Promise.all(newDataPromises);
+    console.log(newData);
+    await queryInterface.bulkInsert('Prices', data, {});
   },
 
   down: async (queryInterface, Sequelize) => {

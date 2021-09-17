@@ -4,6 +4,8 @@ const TelegramBot = require('node-telegram-bot-api');
 const { Telegraf } = require('telegraf');
 const { getCards, getGroupCards } = require('./keyboard');
 const Controller = require('./controller');
+const Charts = require('./statistic/chart');
+const { timeOut, getInfo, getPriceOfProduct, getDataOfProduct } = require('./functionsToApp');
 
 const app = express();
 const bot = new Telegraf(TOKEN);
@@ -43,17 +45,9 @@ bot.action('GeForce RTX 3080 Ti', async (ctx) => {
   // next();
 });
 
-const timeOut = (func, time) =>
-  new Promise((res) => setTimeout(() => res(func()), time));
-
-function getInfo(ctx) {
-  return ctx.reply(`Нажми /start, чтобы выбрать видеокарту
-Нажми /statistic, чтобы увидеть статистику по данной видеокарте`)
-}
-
 bot.action(/.+/, async (ctx) => {
   let id = ctx.match[0].split('/')[1];
-  // const idProduct = await Controller.getPrice(id);
+  // const idProduct = await Controller.getStatisticData(id);
   ctx.reply('название, магазин, цена, наличие, ссылка');
   await timeOut(() => getInfo(ctx), 1000);
   // ctx.reply(`Если хочешь увидеть статистику, жми /статистика`);
@@ -65,9 +59,18 @@ bot.help((ctx, next) => {
   next()
 });
 
-
-bot.command('/statistic', (ctx, next) => {
-  ctx.replyWithPhoto({ source: "./chart.png" });
+bot.command('/statistic', async (ctx, next) => {
+  // let id = ctx.match[0].split('/')[1];
+  // console.log(id)
+  console.log(Controller.getStatisticData())
+  const statisticOfProduct = await Controller.getStatisticData();
+  console.log('getPriceOfProduct(statisticOfProduct)', getPriceOfProduct(statisticOfProduct))
+  console.log('getDataOfProduct(statisticOfProduct)', getDataOfProduct(statisticOfProduct))
+  const statistic = new Charts(getPriceOfProduct(statisticOfProduct[0]), getDataOfProduct(statisticOfProduct[0]));
+  console.log('statistic', statistic)
+  console.log('statistic.chart()', statistic.chart())
+  statistic.chart()
+  ctx.replyWithPhoto({ source: "./statistic/chart.png" });
   next();
 })
 
