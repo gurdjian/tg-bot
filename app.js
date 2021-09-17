@@ -27,8 +27,9 @@ bot.start(async ctx => {
 
 bot.action(/.+/, (ctx, next) => {
   let id = ctx.match[0].split('/')[1]
-  // Controller.getPrice(id)
-  return ctx.reply('название, магазин, цена, наличие, ссылка').then(() => next())
+  const txt = Controller.getPrices(id)
+  console.log(txt, id);
+  return ctx.reply(txt).then(() => next())
 })
 
 // bot.command('time', ctx => {

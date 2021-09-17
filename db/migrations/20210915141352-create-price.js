@@ -15,9 +15,9 @@ module.exports = {
           key: 'id'
         },
       },
-      adapterFullName: {
-        type: Sequelize.TEXT,
-      },
+      // adapterFullName: {
+      //   type: Sequelize.TEXT,
+      // },
       adapterLink: {
         type: Sequelize.TEXT,
       },
@@ -34,9 +34,9 @@ module.exports = {
       available: {
         type: Sequelize.BOOLEAN
       },
-      parseTS: {
-        type: Sequelize.DATE
-      },
+      // parseTS: {
+      //   type: Sequelize.DATE
+      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

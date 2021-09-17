@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.AdapterGroup,{
+        foreignKey: 'groupId'
+      });
       this.hasMany(models.Price,{
         foreignKey: 'adapterId'
       });
@@ -20,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Adapter.init({
-    title: DataTypes.TEXT
+    title: DataTypes.TEXT,
+    groupId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Adapter',
