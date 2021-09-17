@@ -1,13 +1,22 @@
 const { Markup } = require('telegraf');
-const { Controller } = require('./controller');
 
-function getCards(adapters) {
-  //от контроллера из базы данных получаем title видеокарт 
-  const kbArray = adapters.map((elem) => Markup.button.callback(elem.title.substring(0, 64) , `Adapter/${elem.id}`));
-  console.log(kbArray);
-  return Markup.inlineKeyboard(kbArray, {
-    columns: 1,
-  });
+function getGroupCards(adapters) {
+  const kbArray = adapters.map((elem) => Markup.button.callback(elem.title, `group/${elem.id}`));
+  return Markup.inlineKeyboard(kbArray, {columns: 1});
 }
 
-module.exports = { getCards };
+function getCards(adapters) {
+
+  const kbArray = adapters.map((elem) => Markup.button.callback(elem.title, `card/${elem.id}`));
+  // console.log('!!!!!===========', kbArray);
+  return Markup.inlineKeyboard(kbArray, {columns: 1});
+}
+
+function getStats(id) {
+  
+  const kbArray = [ Markup.button.callback('Статистика', `statistic/${id}`) ];
+  // console.log('!!!!!===========', kbArray);
+  return Markup.inlineKeyboard(kbArray, {columns: 1});
+}
+
+module.exports = { getGroupCards, getCards, getStats };

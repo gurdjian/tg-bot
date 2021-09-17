@@ -3,7 +3,7 @@ const parser = require('./parser');
 
 class Controller {
   constructor() {}
-  static async getAdapterGroups(contextFrom) {
+  static async getGroupAdapters(contextFrom) {
     // const user = User.findOne({ where: {tgId: contextFrom.id}});
     const user = User.findOne();
     if (user) {
@@ -15,10 +15,11 @@ class Controller {
 
   static async getAdapters(adapterGroupId) {
     {
-      return await Adapter.findAll({ 
+      const adapters = await Adapter.findAll({ 
         where: { groupId: adapterGroupId },
          limit: 20,
       });
+      return adapters;
     }
   }
 
@@ -40,7 +41,7 @@ class Controller {
       return acc;
     },{});
     console.table(upsertAdaptersHash);
-    const shop = await Shop.findOne();
+    const shop = await Shop.findOne({order: [['id', 'DESC']]});
     resPrices = resPrices.map( (elem) => {
       elem.adapterId = upsertAdaptersHash[elem.title];
       elem.shopId = shop.id;
@@ -64,21 +65,59 @@ class Controller {
   }
 
   static async getPrices(id) {
-    const prices = Price.findAll({
-      include: {
-        model: Shop,
-        where: { id },
+    //текст
+    // из таблиц:
+    // adapters: title
+    // shops: shopName
+    // prices: price
+    // prices: available 
+    // shops: searchLink
+    // [
+    //   {
+    //     id: 1,
+    //     title: "GeForce RTX 3070",
+    //     price: 45000,
+    //   },
+    //   {
+    //     id: 2,
+    //     title: "GeForce RTX 3080",
+    //     price: 30000,
+    //   },
+    //   {
+    //     id: 3,
+    //     title: "GeForce RTX 3080 Ti",
+    //     price: 20000
+    //   }
+    // ]
+    const result = await Price.findAll({
+        where: {id: id},
+        include: {
+          model: Shop
+        }
+      });
+    console.log(result);
+    return result.map( (elem) => {
+      return elem.Shop.shopName + ' : ' + elem.price;
+    }).join('\n');
+  }
+  static async getStatisticData(id) {
+    
+    const shops = Shop.findAll();
+    // const shopsArr = shops.map((elem) => )
+    const shopId = 10;
+    const prices = await Price.findAll( {where: { shopId: shopId, adapterId: id}});
+    const pricesArr = prices.map((elem) => elem.price);
+    const datesArr = prices.map((elem) => elem.createdAt.toLocaleTimeString());
+    console.log(datesArr);
+    return [
+      {
+        id: 1,
+        title: "GeForce RTX 3070",
+        shop: 'Citilink',
+        price: pricesArr,
+        date: datesArr,
       },
-    });
-    // 'название, магазин, цена, наличие, ссылка'
-    const textArr = []; //prices[0].adapterFullName
-    prices.forEach((element) => {
-      textArr.push(
-        `${element.Shop.shopName} ${element.price}  ${element.adapterLink}`
-      );
-    });
-    textArr.push();
-    return textArr.join("\n");
+    ]
   }
 }
 
