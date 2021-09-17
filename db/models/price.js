@@ -14,17 +14,19 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.Adapter,{
         foreignKey: 'adapterId'
       });
-      this.hasMany(models.Shop, {
+      this.belongsTo(models.Shop, {
         foreignKey: 'shopId'
       });
     }
   };
   Price.init({
     adapterId: DataTypes.INTEGER,
+    adapterFullName: DataTypes.TEXT,
+    adapterLink: DataTypes.TEXT,
     shopId: DataTypes.INTEGER,
     price: DataTypes.INTEGER,
     available: DataTypes.BOOLEAN,
-    parseTS: DataTypes.DATE
+    parseTS: DataTypes.DATE,
   }, {
     sequelize,
     modelName: 'Price',
