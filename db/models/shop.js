@@ -11,9 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.User, {
-        foreignKey: 'userId'
-      });
       this.hasMany(models.Price, {
         foreignKey: 'shopId'
       });
@@ -22,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   Shop.init({
     shopName: DataTypes.STRING,
     searchLink: DataTypes.TEXT,
-    userId: DataTypes.INTEGER
+    // userId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Shop',

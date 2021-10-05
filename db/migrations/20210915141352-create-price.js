@@ -15,6 +15,12 @@ module.exports = {
           key: 'id'
         },
       },
+      // adapterFullName: {
+      //   type: Sequelize.TEXT,
+      // },
+      adapterLink: {
+        type: Sequelize.TEXT,
+      },
       shopId: {
         type: Sequelize.INTEGER,
         references: {
@@ -28,9 +34,9 @@ module.exports = {
       available: {
         type: Sequelize.BOOLEAN
       },
-      parseTS: {
-        type: Sequelize.DATE
-      },
+      // parseTS: {
+      //   type: Sequelize.DATE
+      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
