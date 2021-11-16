@@ -4,7 +4,7 @@
 
 <h2>Видео ⬇</h2>
 
-[![Watch the video](https://i9.ytimg.com/vi/R3_j3pcecoE/mq2.jpg?sqp=CPTQs4wG&rs=AOn4CLBxepmCjcG0MpUMA9gq82jxwTR2pA)](https://youtu.be/R3_j3pcecoE)
+[![Watch the video](https://raw.githubusercontent.com/gurdjian/tg-bot/main/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202021-11-16%20%D0%B2%2022.19.02.png](https://youtu.be/R3_j3pcecoE)
 
 Выполни команду npm i, чтобы установить все необходимые зависимости.
 
